@@ -4,11 +4,18 @@ import 'package:workmanager/workmanager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'home_page.dart';
 import 'package:flutter_one/screens/display_screen.dart';
+import 'package:flutter_one/screens/display_disease_screen.dart';
+import 'package:flutter_one/new_screen.dart';
+import 'package:flutter_one/screens/medicine_display_screen.dart';
+import 'package:flutter_one/screens/upload_pdf_screen.dart';
+import 'package:pdftron_flutter/pdftron_flutter.dart';
 
-void main() {
+void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
   // Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
   // Workmanager().registerPeriodicTask('resetSteps', 'resetStepsTask', frequency: Duration(hours: 24));
+  WidgetsFlutterBinding.ensureInitialized();
+  await PdftronFlutter.initialize();
   runApp(const MyApp());
 }
 
@@ -39,7 +46,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: DisplayScreen(),
+      home: UploadPdfScreen(),
     );
   }
 }
