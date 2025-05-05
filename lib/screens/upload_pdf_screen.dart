@@ -44,6 +44,22 @@ class _UploadPdfScreenState extends State<UploadPdfScreen> {
 
   }
 
+  String truncateFileName(String fileName, {int maxLength = 25}) {
+    if (fileName.length <= maxLength) return fileName;
+
+    final extIndex = fileName.lastIndexOf('.');
+    if (extIndex == -1) return fileName.substring(0, maxLength) + '...';
+
+    final namePart = fileName.substring(0, extIndex);
+    final extension = fileName.substring(extIndex);
+
+    if (namePart.length > maxLength - extension.length - 3) {
+      return namePart.substring(0, maxLength - extension.length - 3) + '...' + extension;
+    } else {
+      return fileName;
+    }
+  }
+
   void openPdfWithOtherApp(String filePath) {
     OpenFile.open(filePath);
   }
@@ -56,39 +72,47 @@ class _UploadPdfScreenState extends State<UploadPdfScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            InkWell(
-              onTap: (){
-                _pickPdf();
-              },
-              child: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.black),
-                  color: Colors.white,
-                ),
-                child: Text("Search File"),
-              ),
-            ),
-            const SizedBox(height: 20),
-            if (_selectedFilePath != null)
-              InkWell(
-                onTap: _showOpenWithDialog,
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8),
+            Row(
+              children: [
+                InkWell(
+                  onTap: (){
+                    _pickPdf();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.black),
+                      color: Colors.white,
+                    ),
+                    child: Text("Search File"),
                   ),
-                  child: Text(
-                    _selectedFilePath!.split('/').last,
-                    style: const TextStyle(
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline,
+                ),
+                SizedBox(width: 10,),
+                const SizedBox(height: 20),
+                if (_selectedFilePath != null)
+                  Expanded(
+                    child: InkWell(
+                      onTap: _showOpenWithDialog,
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          truncateFileName(_selectedFilePath!.split('/').last),
+                          style: const TextStyle(
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
+              ],
+            )
           ],
         )
       ),
