@@ -41,6 +41,7 @@ dependencies:
   http: 
   pdftron_flutter: ^1.0.1-43
   file_picker: ^10.1.2
+  open_file_plus: ^3.4.1+1
 
 dev_dependencies:
   flutter_test:
